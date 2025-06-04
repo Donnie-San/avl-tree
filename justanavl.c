@@ -14,7 +14,7 @@ typedef struct Node {
 Node* createNode(const char* name, double score) {
   Node* newNode = (Node*)malloc(sizeof(Node));
   if (!newNode) {
-    fprintf(stderr, "Memory allocation failed.\n");
+    fprintf(stderr, "Error: Memory allocation failed.\n");
     return NULL;
   }
   strcpy(newNode->name, name);
@@ -151,6 +151,7 @@ Node* delete(Node* root, double score) {
   return root;
 }
 
+// Depth First Search: "depth first", so vertical first, like a stack
 void inOrder(Node* root) {
   if (!root) return;
   inOrder(root->left);
@@ -171,6 +172,8 @@ void postOrder(Node* root) {
   postOrder(root->right);
   printf("Name: %s, Score: %.2f\n", root->name, root->score);
 }
+
+// Breadth First Search: Breadth has the same meaning as wide, so horizontal first, like a queue
 
 int main() {
   Node* root = NULL;
