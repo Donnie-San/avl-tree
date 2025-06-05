@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -130,7 +131,8 @@ TreeNode* dequeue(Queue* q) {
 }
 
 void freeQueue(Queue* q) {
-if (!q) return;
+    if (!q) return;
+    
     while (q->head) {
         QueueNode* temp = q->head;
         q->head = q->head->next;
@@ -209,21 +211,20 @@ TreeNode* insertNode(TreeNode* node, const char* username, double score) {
     } else {
         return node;
     }
-
     updateHeight(node);
 
     int balance = getBalanceFactor(node);
-    if (balance > 1 && score < node->left->score) {
+    if (balance > 1 && getBalanceFactor(node->left) >= 0) {
         return rightRotate(node);
     }
-    if (balance < -1 && score > node->right->score) {
-        return leftRotate(node);
-    }
-    if (balance > 1 && score > node->left->score) {
+    if (balance > 1 && getBalanceFactor(node->left) < 0) {
         node->left = leftRotate(node->left);
         return rightRotate(node);
     }
-    if (balance < -1 && score < node->right->score) {
+    if (balance < -1 && getBalanceFactor(node->right) <= 0) {
+        return leftRotate(node);
+    }
+    if (balance < -1 && getBalanceFactor(node->right) > 0) {
         node->right = rightRotate(node->right);
         return leftRotate(node);
     }
